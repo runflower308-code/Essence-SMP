@@ -1,0 +1,7 @@
+name: EssenceSMP-Solar
+version: 1.0.0
+main: com.essencesmp.solar.SolarPlugin
+api-version: '1.21'
+commands:
+  solar:
+  essence:
