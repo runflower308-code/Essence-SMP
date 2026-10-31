@@ -1,0 +1,1295 @@
+Compiled from "SolarPlugin.java"
+public final class com.essencesmp.solar.SolarPlugin extends org.bukkit.plugin.java.JavaPlugin implements org.bukkit.event.Listener {
+  private org.bukkit.NamespacedKey itemTypeKey;
+    descriptor: Lorg/bukkit/NamespacedKey;
+
+  private org.bukkit.NamespacedKey targetTierKey;
+    descriptor: Lorg/bukkit/NamespacedKey;
+
+  private final java.util.Map<java.util.UUID, java.util.Map<java.lang.String, java.lang.Integer>> tiers;
+    descriptor: Ljava/util/Map;
+
+  private final java.util.Map<java.util.UUID, java.util.Map<java.lang.String, java.lang.Long>> cooldowns;
+    descriptor: Ljava/util/Map;
+
+  public com.essencesmp.solar.SolarPlugin();
+    descriptor: ()V
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method org/bukkit/plugin/java/JavaPlugin."<init>":()V
+       4: aload_0
+       5: new           #7                  // class java/util/HashMap
+       8: dup
+       9: invokespecial #9                  // Method java/util/HashMap."<init>":()V
+      12: putfield      #10                 // Field tiers:Ljava/util/Map;
+      15: aload_0
+      16: new           #7                  // class java/util/HashMap
+      19: dup
+      20: invokespecial #9                  // Method java/util/HashMap."<init>":()V
+      23: putfield      #16                 // Field cooldowns:Ljava/util/Map;
+      26: return
+
+  public void onEnable();
+    descriptor: ()V
+    Code:
+       0: aload_0
+       1: new           #19                 // class org/bukkit/NamespacedKey
+       4: dup
+       5: aload_0
+       6: ldc           #21                 // String essence_item
+       8: invokespecial #23                 // Method org/bukkit/NamespacedKey."<init>":(Lorg/bukkit/plugin/Plugin;Ljava/lang/String;)V
+      11: putfield      #26                 // Field itemTypeKey:Lorg/bukkit/NamespacedKey;
+      14: aload_0
+      15: new           #19                 // class org/bukkit/NamespacedKey
+      18: dup
+      19: aload_0
+      20: ldc           #30                 // String target_tier
+      22: invokespecial #23                 // Method org/bukkit/NamespacedKey."<init>":(Lorg/bukkit/plugin/Plugin;Ljava/lang/String;)V
+      25: putfield      #32                 // Field targetTierKey:Lorg/bukkit/NamespacedKey;
+      28: aload_0
+      29: invokevirtual #35                 // Method loadTiers:()V
+      32: aload_0
+      33: invokevirtual #38                 // Method getServer:()Lorg/bukkit/Server;
+      36: invokeinterface #42,  1           // InterfaceMethod org/bukkit/Server.getPluginManager:()Lorg/bukkit/plugin/PluginManager;
+      41: aload_0
+      42: aload_0
+      43: invokeinterface #48,  3           // InterfaceMethod org/bukkit/plugin/PluginManager.registerEvents:(Lorg/bukkit/event/Listener;Lorg/bukkit/plugin/Plugin;)V
+      48: aload_0
+      49: ldc           #54                 // String solar
+      51: invokevirtual #56                 // Method getCommand:(Ljava/lang/String;)Lorg/bukkit/command/PluginCommand;
+      54: invokestatic  #60                 // Method java/util/Objects.requireNonNull:(Ljava/lang/Object;)Ljava/lang/Object;
+      57: checkcast     #66                 // class org/bukkit/command/PluginCommand
+      60: aload_0
+      61: invokedynamic #68,  0             // InvokeDynamic #0:onCommand:(Lcom/essencesmp/solar/SolarPlugin;)Lorg/bukkit/command/CommandExecutor;
+      66: invokevirtual #72                 // Method org/bukkit/command/PluginCommand.setExecutor:(Lorg/bukkit/command/CommandExecutor;)V
+      69: aload_0
+      70: ldc           #76                 // String essence
+      72: invokevirtual #56                 // Method getCommand:(Ljava/lang/String;)Lorg/bukkit/command/PluginCommand;
+      75: invokestatic  #60                 // Method java/util/Objects.requireNonNull:(Ljava/lang/Object;)Ljava/lang/Object;
+      78: checkcast     #66                 // class org/bukkit/command/PluginCommand
+      81: aload_0
+      82: invokedynamic #78,  0             // InvokeDynamic #1:onCommand:(Lcom/essencesmp/solar/SolarPlugin;)Lorg/bukkit/command/CommandExecutor;
+      87: invokevirtual #72                 // Method org/bukkit/command/PluginCommand.setExecutor:(Lorg/bukkit/command/CommandExecutor;)V
+      90: aload_0
+      91: iconst_2
+      92: invokevirtual #79                 // Method upgraderRecipe:(I)Lorg/bukkit/inventory/ShapedRecipe;
+      95: invokestatic  #83                 // Method org/bukkit/Bukkit.addRecipe:(Lorg/bukkit/inventory/Recipe;)Z
+      98: pop
+      99: aload_0
+     100: iconst_3
+     101: invokevirtual #79                 // Method upgraderRecipe:(I)Lorg/bukkit/inventory/ShapedRecipe;
+     104: invokestatic  #83                 // Method org/bukkit/Bukkit.addRecipe:(Lorg/bukkit/inventory/Recipe;)Z
+     107: pop
+     108: aload_0
+     109: invokevirtual #89                 // Method getLogger:()Ljava/util/logging/Logger;
+     112: ldc           #93                 // String EssenceSMP Solar enabled.
+     114: invokevirtual #95                 // Method java/util/logging/Logger.info:(Ljava/lang/String;)V
+     117: return
+
+  public void onDisable();
+    descriptor: ()V
+    Code:
+       0: aload_0
+       1: invokevirtual #101                // Method saveTiers:()V
+       4: return
+
+  private org.bukkit.inventory.ShapedRecipe upgraderRecipe(int);
+    descriptor: (I)Lorg/bukkit/inventory/ShapedRecipe;
+    Code:
+       0: aload_0
+       1: iload_1
+       2: invokevirtual #104                // Method upgraderItem:(I)Lorg/bukkit/inventory/ItemStack;
+       5: astore_2
+       6: new           #108                // class org/bukkit/inventory/ShapedRecipe
+       9: dup
+      10: new           #19                 // class org/bukkit/NamespacedKey
+      13: dup
+      14: aload_0
+      15: iload_1
+      16: invokedynamic #110,  0            // InvokeDynamic #2:makeConcatWithConstants:(I)Ljava/lang/String;
+      21: invokespecial #23                 // Method org/bukkit/NamespacedKey."<init>":(Lorg/bukkit/plugin/Plugin;Ljava/lang/String;)V
+      24: aload_2
+      25: invokespecial #114                // Method org/bukkit/inventory/ShapedRecipe."<init>":(Lorg/bukkit/NamespacedKey;Lorg/bukkit/inventory/ItemStack;)V
+      28: astore_3
+      29: aload_3
+      30: iconst_3
+      31: anewarray     #117                // class java/lang/String
+      34: dup
+      35: iconst_0
+      36: ldc           #119                // String DGD
+      38: aastore
+      39: dup
+      40: iconst_1
+      41: ldc           #121                // String GNG
+      43: aastore
+      44: dup
+      45: iconst_2
+      46: ldc           #119                // String DGD
+      48: aastore
+      49: invokevirtual #123                // Method org/bukkit/inventory/ShapedRecipe.shape:([Ljava/lang/String;)Lorg/bukkit/inventory/ShapedRecipe;
+      52: pop
+      53: iload_1
+      54: iconst_2
+      55: if_icmpne     91
+      58: aload_3
+      59: bipush        68
+      61: getstatic     #127                // Field org/bukkit/Material.DIAMOND:Lorg/bukkit/Material;
+      64: invokevirtual #133                // Method org/bukkit/inventory/ShapedRecipe.setIngredient:(CLorg/bukkit/Material;)Lorg/bukkit/inventory/ShapedRecipe;
+      67: pop
+      68: aload_3
+      69: bipush        71
+      71: getstatic     #137                // Field org/bukkit/Material.GOLD_INGOT:Lorg/bukkit/Material;
+      74: invokevirtual #133                // Method org/bukkit/inventory/ShapedRecipe.setIngredient:(CLorg/bukkit/Material;)Lorg/bukkit/inventory/ShapedRecipe;
+      77: pop
+      78: aload_3
+      79: bipush        78
+      81: getstatic     #140                // Field org/bukkit/Material.DIAMOND_BLOCK:Lorg/bukkit/Material;
+      84: invokevirtual #133                // Method org/bukkit/inventory/ShapedRecipe.setIngredient:(CLorg/bukkit/Material;)Lorg/bukkit/inventory/ShapedRecipe;
+      87: pop
+      88: goto          121
+      91: aload_3
+      92: bipush        68
+      94: getstatic     #140                // Field org/bukkit/Material.DIAMOND_BLOCK:Lorg/bukkit/Material;
+      97: invokevirtual #133                // Method org/bukkit/inventory/ShapedRecipe.setIngredient:(CLorg/bukkit/Material;)Lorg/bukkit/inventory/ShapedRecipe;
+     100: pop
+     101: aload_3
+     102: bipush        71
+     104: getstatic     #143                // Field org/bukkit/Material.NETHERITE_INGOT:Lorg/bukkit/Material;
+     107: invokevirtual #133                // Method org/bukkit/inventory/ShapedRecipe.setIngredient:(CLorg/bukkit/Material;)Lorg/bukkit/inventory/ShapedRecipe;
+     110: pop
+     111: aload_3
+     112: bipush        78
+     114: getstatic     #146                // Field org/bukkit/Material.NETHER_STAR:Lorg/bukkit/Material;
+     117: invokevirtual #133                // Method org/bukkit/inventory/ShapedRecipe.setIngredient:(CLorg/bukkit/Material;)Lorg/bukkit/inventory/ShapedRecipe;
+     120: pop
+     121: aload_3
+     122: areturn
+
+  private org.bukkit.inventory.ItemStack upgraderItem(int);
+    descriptor: (I)Lorg/bukkit/inventory/ItemStack;
+    Code:
+       0: new           #149                // class org/bukkit/inventory/ItemStack
+       3: dup
+       4: iload_1
+       5: iconst_2
+       6: if_icmpne     15
+       9: getstatic     #127                // Field org/bukkit/Material.DIAMOND:Lorg/bukkit/Material;
+      12: goto          18
+      15: getstatic     #143                // Field org/bukkit/Material.NETHERITE_INGOT:Lorg/bukkit/Material;
+      18: invokespecial #151                // Method org/bukkit/inventory/ItemStack."<init>":(Lorg/bukkit/Material;)V
+      21: astore_2
+      22: aload_2
+      23: invokevirtual #154                // Method org/bukkit/inventory/ItemStack.getItemMeta:()Lorg/bukkit/inventory/meta/ItemMeta;
+      26: astore_3
+      27: aload_3
+      28: getstatic     #158                // Field org/bukkit/ChatColor.GOLD:Lorg/bukkit/ChatColor;
+      31: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+      34: getstatic     #168                // Field org/bukkit/ChatColor.BOLD:Lorg/bukkit/ChatColor;
+      37: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+      40: iload_1
+      41: iconst_2
+      42: if_icmpne     50
+      45: ldc           #171                // String II
+      47: goto          52
+      50: ldc           #173                // String III
+      52: invokedynamic #175,  0            // InvokeDynamic #3:makeConcatWithConstants:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+      57: invokeinterface #178,  2          // InterfaceMethod org/bukkit/inventory/meta/ItemMeta.setDisplayName:(Ljava/lang/String;)V
+      62: aload_3
+      63: getstatic     #183                // Field org/bukkit/ChatColor.GRAY:Lorg/bukkit/ChatColor;
+      66: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+      69: invokedynamic #186,  0            // InvokeDynamic #4:makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;
+      74: getstatic     #189                // Field org/bukkit/ChatColor.YELLOW:Lorg/bukkit/ChatColor;
+      77: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+      80: invokedynamic #192,  0            // InvokeDynamic #5:makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;
+      85: getstatic     #193                // Field org/bukkit/ChatColor.DARK_GRAY:Lorg/bukkit/ChatColor;
+      88: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+      91: iload_1
+      92: invokedynamic #196,  0            // InvokeDynamic #6:makeConcatWithConstants:(Ljava/lang/String;I)Ljava/lang/String;
+      97: invokestatic  #199                // InterfaceMethod java/util/List.of:(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/util/List;
+     100: invokeinterface #205,  2          // InterfaceMethod org/bukkit/inventory/meta/ItemMeta.setLore:(Ljava/util/List;)V
+     105: aload_3
+     106: invokeinterface #209,  1          // InterfaceMethod org/bukkit/inventory/meta/ItemMeta.getPersistentDataContainer:()Lorg/bukkit/persistence/PersistentDataContainer;
+     111: aload_0
+     112: getfield      #26                 // Field itemTypeKey:Lorg/bukkit/NamespacedKey;
+     115: getstatic     #213                // Field org/bukkit/persistence/PersistentDataType.STRING:Lorg/bukkit/persistence/PersistentDataType;
+     118: ldc           #219                // String upgrader
+     120: invokeinterface #221,  4          // InterfaceMethod org/bukkit/persistence/PersistentDataContainer.set:(Lorg/bukkit/NamespacedKey;Lorg/bukkit/persistence/PersistentDataType;Ljava/lang/Object;)V
+     125: aload_3
+     126: invokeinterface #209,  1          // InterfaceMethod org/bukkit/inventory/meta/ItemMeta.getPersistentDataContainer:()Lorg/bukkit/persistence/PersistentDataContainer;
+     131: aload_0
+     132: getfield      #32                 // Field targetTierKey:Lorg/bukkit/NamespacedKey;
+     135: getstatic     #227                // Field org/bukkit/persistence/PersistentDataType.INTEGER:Lorg/bukkit/persistence/PersistentDataType;
+     138: iload_1
+     139: invokestatic  #230                // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+     142: invokeinterface #221,  4          // InterfaceMethod org/bukkit/persistence/PersistentDataContainer.set:(Lorg/bukkit/NamespacedKey;Lorg/bukkit/persistence/PersistentDataType;Ljava/lang/Object;)V
+     147: aload_2
+     148: aload_3
+     149: invokevirtual #235                // Method org/bukkit/inventory/ItemStack.setItemMeta:(Lorg/bukkit/inventory/meta/ItemMeta;)Z
+     152: pop
+     153: aload_2
+     154: areturn
+
+  private boolean solarCommand(org.bukkit.command.CommandSender, java.lang.String, java.lang.String[]);
+    descriptor: (Lorg/bukkit/command/CommandSender;Ljava/lang/String;[Ljava/lang/String;)Z
+    Code:
+       0: aload_1
+       1: instanceof    #239                // class org/bukkit/entity/Player
+       4: ifeq          16
+       7: aload_1
+       8: checkcast     #239                // class org/bukkit/entity/Player
+      11: astore        4
+      13: goto          26
+      16: aload_1
+      17: ldc           #241                // String Players only.
+      19: invokeinterface #243,  2          // InterfaceMethod org/bukkit/command/CommandSender.sendMessage:(Ljava/lang/String;)V
+      24: iconst_1
+      25: ireturn
+      26: aload_3
+      27: arraylength
+      28: ifne          51
+      31: aload         4
+      33: getstatic     #158                // Field org/bukkit/ChatColor.GOLD:Lorg/bukkit/ChatColor;
+      36: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+      39: invokedynamic #248,  0            // InvokeDynamic #7:makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;
+      44: invokeinterface #249,  2          // InterfaceMethod org/bukkit/entity/Player.sendMessage:(Ljava/lang/String;)V
+      49: iconst_1
+      50: ireturn
+      51: aload_3
+      52: iconst_0
+      53: aaload
+      54: getstatic     #250                // Field java/util/Locale.ROOT:Ljava/util/Locale;
+      57: invokevirtual #256                // Method java/lang/String.toLowerCase:(Ljava/util/Locale;)Ljava/lang/String;
+      60: astore        5
+      62: iconst_m1
+      63: istore        6
+      65: aload         5
+      67: invokevirtual #260                // Method java/lang/String.hashCode:()I
+      70: lookupswitch  { // 4
+           -1914143161: 163
+            -520564372: 129
+              97513422: 112
+            1035215093: 146
+               default: 177
+          }
+     112: aload         5
+     114: ldc_w         #264                // String flare
+     117: invokevirtual #266                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     120: ifeq          177
+     123: iconst_0
+     124: istore        6
+     126: goto          177
+     129: aload         5
+     131: ldc_w         #270                // String judgment
+     134: invokevirtual #266                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     137: ifeq          177
+     140: iconst_1
+     141: istore        6
+     143: goto          177
+     146: aload         5
+     148: ldc_w         #272                // String judgement
+     151: invokevirtual #266                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     154: ifeq          177
+     157: iconst_2
+     158: istore        6
+     160: goto          177
+     163: aload         5
+     165: ldc_w         #274                // String eclipse
+     168: invokevirtual #266                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+     171: ifeq          177
+     174: iconst_3
+     175: istore        6
+     177: iload         6
+     179: tableswitch   { // 0 to 3
+                     0: 208
+                     1: 217
+                     2: 217
+                     3: 259
+               default: 301
+          }
+     208: aload_0
+     209: aload         4
+     211: invokevirtual #276                // Method castFlare:(Lorg/bukkit/entity/Player;)V
+     214: goto          319
+     217: aload_0
+     218: aload         4
+     220: ldc           #54                 // String solar
+     222: invokevirtual #280                // Method tier:(Lorg/bukkit/entity/Player;Ljava/lang/String;)I
+     225: iconst_2
+     226: if_icmpge     250
+     229: aload         4
+     231: getstatic     #284                // Field org/bukkit/ChatColor.RED:Lorg/bukkit/ChatColor;
+     234: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+     237: invokedynamic #287,  0            // InvokeDynamic #8:makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;
+     242: invokeinterface #249,  2          // InterfaceMethod org/bukkit/entity/Player.sendMessage:(Ljava/lang/String;)V
+     247: goto          319
+     250: aload_0
+     251: aload         4
+     253: invokevirtual #288                // Method castJudgment:(Lorg/bukkit/entity/Player;)V
+     256: goto          319
+     259: aload_0
+     260: aload         4
+     262: ldc           #54                 // String solar
+     264: invokevirtual #280                // Method tier:(Lorg/bukkit/entity/Player;Ljava/lang/String;)I
+     267: iconst_3
+     268: if_icmpge     292
+     271: aload         4
+     273: getstatic     #284                // Field org/bukkit/ChatColor.RED:Lorg/bukkit/ChatColor;
+     276: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+     279: invokedynamic #291,  0            // InvokeDynamic #9:makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;
+     284: invokeinterface #249,  2          // InterfaceMethod org/bukkit/entity/Player.sendMessage:(Ljava/lang/String;)V
+     289: goto          319
+     292: aload_0
+     293: aload         4
+     295: invokevirtual #292                // Method castEclipse:(Lorg/bukkit/entity/Player;)V
+     298: goto          319
+     301: aload         4
+     303: getstatic     #284                // Field org/bukkit/ChatColor.RED:Lorg/bukkit/ChatColor;
+     306: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+     309: invokedynamic #295,  0            // InvokeDynamic #10:makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;
+     314: invokeinterface #249,  2          // InterfaceMethod org/bukkit/entity/Player.sendMessage:(Ljava/lang/String;)V
+     319: iconst_1
+     320: ireturn
+
+  private boolean essenceCommand(org.bukkit.command.CommandSender, java.lang.String, java.lang.String[]);
+    descriptor: (Lorg/bukkit/command/CommandSender;Ljava/lang/String;[Ljava/lang/String;)Z
+    Code:
+       0: aload_3
+       1: arraylength
+       2: ifne          58
+       5: aload_1
+       6: instanceof    #239                // class org/bukkit/entity/Player
+       9: ifeq          47
+      12: aload_1
+      13: checkcast     #239                // class org/bukkit/entity/Player
+      16: astore        4
+      18: aload         4
+      20: getstatic     #158                // Field org/bukkit/ChatColor.GOLD:Lorg/bukkit/ChatColor;
+      23: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+      26: aload_0
+      27: aload         4
+      29: ldc           #54                 // String solar
+      31: invokevirtual #280                // Method tier:(Lorg/bukkit/entity/Player;Ljava/lang/String;)I
+      34: invokedynamic #296,  0            // InvokeDynamic #11:makeConcatWithConstants:(Ljava/lang/String;I)Ljava/lang/String;
+      39: invokeinterface #249,  2          // InterfaceMethod org/bukkit/entity/Player.sendMessage:(Ljava/lang/String;)V
+      44: goto          56
+      47: aload_1
+      48: ldc_w         #297                // String Use /essence giveupgrader <player|self> <tier2|tier3>
+      51: invokeinterface #243,  2          // InterfaceMethod org/bukkit/command/CommandSender.sendMessage:(Ljava/lang/String;)V
+      56: iconst_1
+      57: ireturn
+      58: aload_3
+      59: iconst_0
+      60: aaload
+      61: ldc_w         #299                // String giveupgrader
+      64: invokevirtual #301                // Method java/lang/String.equalsIgnoreCase:(Ljava/lang/String;)Z
+      67: ifeq          293
+      70: aload_1
+      71: ldc_w         #305                // String essencesmp.admin
+      74: invokeinterface #307,  2          // InterfaceMethod org/bukkit/command/CommandSender.hasPermission:(Ljava/lang/String;)Z
+      79: ifne          101
+      82: aload_1
+      83: getstatic     #284                // Field org/bukkit/ChatColor.RED:Lorg/bukkit/ChatColor;
+      86: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+      89: invokedynamic #310,  0            // InvokeDynamic #12:makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;
+      94: invokeinterface #243,  2          // InterfaceMethod org/bukkit/command/CommandSender.sendMessage:(Ljava/lang/String;)V
+      99: iconst_1
+     100: ireturn
+     101: aload_3
+     102: arraylength
+     103: iconst_3
+     104: if_icmpge     118
+     107: aload_1
+     108: ldc_w         #311                // String Usage: /essence giveupgrader <player|self> <tier2|tier3>
+     111: invokeinterface #243,  2          // InterfaceMethod org/bukkit/command/CommandSender.sendMessage:(Ljava/lang/String;)V
+     116: iconst_1
+     117: ireturn
+     118: aload_3
+     119: iconst_1
+     120: aaload
+     121: ldc_w         #313                // String self
+     124: invokevirtual #301                // Method java/lang/String.equalsIgnoreCase:(Ljava/lang/String;)Z
+     127: ifeq          148
+     130: aload_1
+     131: instanceof    #239                // class org/bukkit/entity/Player
+     134: ifeq          148
+     137: aload_1
+     138: checkcast     #239                // class org/bukkit/entity/Player
+     141: astore        5
+     143: aload         5
+     145: goto          154
+     148: aload_3
+     149: iconst_1
+     150: aaload
+     151: invokestatic  #315                // Method org/bukkit/Bukkit.getPlayerExact:(Ljava/lang/String;)Lorg/bukkit/entity/Player;
+     154: astore        4
+     156: aload         4
+     158: ifnonnull     180
+     161: aload_1
+     162: getstatic     #284                // Field org/bukkit/ChatColor.RED:Lorg/bukkit/ChatColor;
+     165: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+     168: invokedynamic #319,  0            // InvokeDynamic #13:makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;
+     173: invokeinterface #243,  2          // InterfaceMethod org/bukkit/command/CommandSender.sendMessage:(Ljava/lang/String;)V
+     178: iconst_1
+     179: ireturn
+     180: aload_3
+     181: iconst_2
+     182: aaload
+     183: ldc_w         #320                // String tier2
+     186: invokevirtual #301                // Method java/lang/String.equalsIgnoreCase:(Ljava/lang/String;)Z
+     189: ifeq          196
+     192: iconst_2
+     193: goto          213
+     196: aload_3
+     197: iconst_2
+     198: aaload
+     199: ldc_w         #322                // String tier3
+     202: invokevirtual #301                // Method java/lang/String.equalsIgnoreCase:(Ljava/lang/String;)Z
+     205: ifeq          212
+     208: iconst_3
+     209: goto          213
+     212: iconst_0
+     213: istore        5
+     215: iload         5
+     217: ifne          239
+     220: aload_1
+     221: getstatic     #284                // Field org/bukkit/ChatColor.RED:Lorg/bukkit/ChatColor;
+     224: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+     227: invokedynamic #324,  0            // InvokeDynamic #14:makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;
+     232: invokeinterface #243,  2          // InterfaceMethod org/bukkit/command/CommandSender.sendMessage:(Ljava/lang/String;)V
+     237: iconst_1
+     238: ireturn
+     239: aload         4
+     241: invokeinterface #325,  1          // InterfaceMethod org/bukkit/entity/Player.getInventory:()Lorg/bukkit/inventory/PlayerInventory;
+     246: iconst_1
+     247: anewarray     #149                // class org/bukkit/inventory/ItemStack
+     250: dup
+     251: iconst_0
+     252: aload_0
+     253: iload         5
+     255: invokevirtual #104                // Method upgraderItem:(I)Lorg/bukkit/inventory/ItemStack;
+     258: aastore
+     259: invokeinterface #329,  2          // InterfaceMethod org/bukkit/inventory/PlayerInventory.addItem:([Lorg/bukkit/inventory/ItemStack;)Ljava/util/HashMap;
+     264: pop
+     265: aload_1
+     266: getstatic     #335                // Field org/bukkit/ChatColor.GREEN:Lorg/bukkit/ChatColor;
+     269: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+     272: iload         5
+     274: aload         4
+     276: invokeinterface #338,  1          // InterfaceMethod org/bukkit/entity/Player.getName:()Ljava/lang/String;
+     281: invokedynamic #342,  0            // InvokeDynamic #15:makeConcatWithConstants:(Ljava/lang/String;ILjava/lang/String;)Ljava/lang/String;
+     286: invokeinterface #243,  2          // InterfaceMethod org/bukkit/command/CommandSender.sendMessage:(Ljava/lang/String;)V
+     291: iconst_1
+     292: ireturn
+     293: aload_1
+     294: getstatic     #284                // Field org/bukkit/ChatColor.RED:Lorg/bukkit/ChatColor;
+     297: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+     300: invokedynamic #345,  0            // InvokeDynamic #16:makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;
+     305: invokeinterface #243,  2          // InterfaceMethod org/bukkit/command/CommandSender.sendMessage:(Ljava/lang/String;)V
+     310: iconst_1
+     311: ireturn
+
+  public void onInteract(org.bukkit.event.player.PlayerInteractEvent);
+    descriptor: (Lorg/bukkit/event/player/PlayerInteractEvent;)V
+    Code:
+       0: aload_1
+       1: invokevirtual #346                // Method org/bukkit/event/player/PlayerInteractEvent.getHand:()Lorg/bukkit/inventory/EquipmentSlot;
+       4: getstatic     #352                // Field org/bukkit/inventory/EquipmentSlot.HAND:Lorg/bukkit/inventory/EquipmentSlot;
+       7: if_acmpeq     11
+      10: return
+      11: aload_1
+      12: invokevirtual #358                // Method org/bukkit/event/player/PlayerInteractEvent.getAction:()Lorg/bukkit/event/block/Action;
+      15: astore_2
+      16: aload_2
+      17: getstatic     #362                // Field org/bukkit/event/block/Action.RIGHT_CLICK_AIR:Lorg/bukkit/event/block/Action;
+      20: if_acmpeq     31
+      23: aload_2
+      24: getstatic     #368                // Field org/bukkit/event/block/Action.RIGHT_CLICK_BLOCK:Lorg/bukkit/event/block/Action;
+      27: if_acmpeq     31
+      30: return
+      31: aload_1
+      32: invokevirtual #371                // Method org/bukkit/event/player/PlayerInteractEvent.getItem:()Lorg/bukkit/inventory/ItemStack;
+      35: astore_3
+      36: aload_3
+      37: ifnull        47
+      40: aload_3
+      41: invokevirtual #375                // Method org/bukkit/inventory/ItemStack.hasItemMeta:()Z
+      44: ifne          48
+      47: return
+      48: aload_3
+      49: invokevirtual #154                // Method org/bukkit/inventory/ItemStack.getItemMeta:()Lorg/bukkit/inventory/meta/ItemMeta;
+      52: astore        4
+      54: aload         4
+      56: invokeinterface #209,  1          // InterfaceMethod org/bukkit/inventory/meta/ItemMeta.getPersistentDataContainer:()Lorg/bukkit/persistence/PersistentDataContainer;
+      61: aload_0
+      62: getfield      #26                 // Field itemTypeKey:Lorg/bukkit/NamespacedKey;
+      65: getstatic     #213                // Field org/bukkit/persistence/PersistentDataType.STRING:Lorg/bukkit/persistence/PersistentDataType;
+      68: invokeinterface #379,  3          // InterfaceMethod org/bukkit/persistence/PersistentDataContainer.get:(Lorg/bukkit/NamespacedKey;Lorg/bukkit/persistence/PersistentDataType;)Ljava/lang/Object;
+      73: checkcast     #117                // class java/lang/String
+      76: astore        5
+      78: ldc           #219                // String upgrader
+      80: aload         5
+      82: invokevirtual #266                // Method java/lang/String.equals:(Ljava/lang/Object;)Z
+      85: ifeq          238
+      88: aload_1
+      89: iconst_1
+      90: invokevirtual #383                // Method org/bukkit/event/player/PlayerInteractEvent.setCancelled:(Z)V
+      93: aload         4
+      95: invokeinterface #209,  1          // InterfaceMethod org/bukkit/inventory/meta/ItemMeta.getPersistentDataContainer:()Lorg/bukkit/persistence/PersistentDataContainer;
+     100: aload_0
+     101: getfield      #32                 // Field targetTierKey:Lorg/bukkit/NamespacedKey;
+     104: getstatic     #227                // Field org/bukkit/persistence/PersistentDataType.INTEGER:Lorg/bukkit/persistence/PersistentDataType;
+     107: invokeinterface #379,  3          // InterfaceMethod org/bukkit/persistence/PersistentDataContainer.get:(Lorg/bukkit/NamespacedKey;Lorg/bukkit/persistence/PersistentDataType;)Ljava/lang/Object;
+     112: checkcast     #231                // class java/lang/Integer
+     115: astore        6
+     117: aload         6
+     119: ifnonnull     123
+     122: return
+     123: aload_1
+     124: invokevirtual #387                // Method org/bukkit/event/player/PlayerInteractEvent.getPlayer:()Lorg/bukkit/entity/Player;
+     127: astore        7
+     129: aload_0
+     130: aload         7
+     132: ldc           #54                 // String solar
+     134: invokevirtual #280                // Method tier:(Lorg/bukkit/entity/Player;Ljava/lang/String;)I
+     137: istore        8
+     139: aload         6
+     141: invokevirtual #391                // Method java/lang/Integer.intValue:()I
+     144: iload         8
+     146: iconst_1
+     147: iadd
+     148: if_icmpeq     174
+     151: aload         7
+     153: getstatic     #284                // Field org/bukkit/ChatColor.RED:Lorg/bukkit/ChatColor;
+     156: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+     159: aload         6
+     161: iload         8
+     163: invokedynamic #394,  0            // InvokeDynamic #17:makeConcatWithConstants:(Ljava/lang/String;Ljava/lang/Integer;I)Ljava/lang/String;
+     168: invokeinterface #249,  2          // InterfaceMethod org/bukkit/entity/Player.sendMessage:(Ljava/lang/String;)V
+     173: return
+     174: aload_0
+     175: aload         7
+     177: ldc           #54                 // String solar
+     179: aload         6
+     181: invokevirtual #391                // Method java/lang/Integer.intValue:()I
+     184: invokevirtual #397                // Method setTier:(Lorg/bukkit/entity/Player;Ljava/lang/String;I)V
+     187: aload_0
+     188: aload         7
+     190: aload_3
+     191: invokevirtual #401                // Method consumeOne:(Lorg/bukkit/entity/Player;Lorg/bukkit/inventory/ItemStack;)V
+     194: aload         7
+     196: getstatic     #158                // Field org/bukkit/ChatColor.GOLD:Lorg/bukkit/ChatColor;
+     199: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+     202: aload         6
+     204: invokedynamic #405,  0            // InvokeDynamic #18:makeConcatWithConstants:(Ljava/lang/String;Ljava/lang/Integer;)Ljava/lang/String;
+     209: invokeinterface #249,  2          // InterfaceMethod org/bukkit/entity/Player.sendMessage:(Ljava/lang/String;)V
+     214: aload         7
+     216: aload         7
+     218: invokeinterface #408,  1          // InterfaceMethod org/bukkit/entity/Player.getLocation:()Lorg/bukkit/Location;
+     223: getstatic     #412                // Field org/bukkit/Sound.UI_TOAST_CHALLENGE_COMPLETE:Lorg/bukkit/Sound;
+     226: ldc_w         #418                // float 0.8f
+     229: ldc_w         #419                // float 1.2f
+     232: invokeinterface #420,  5          // InterfaceMethod org/bukkit/entity/Player.playSound:(Lorg/bukkit/Location;Lorg/bukkit/Sound;FF)V
+     237: return
+     238: aload_3
+     239: invokevirtual #424                // Method org/bukkit/inventory/ItemStack.getType:()Lorg/bukkit/Material;
+     242: getstatic     #428                // Field org/bukkit/Material.BLAZE_ROD:Lorg/bukkit/Material;
+     245: if_acmpne     264
+     248: aload_1
+     249: iconst_1
+     250: invokevirtual #383                // Method org/bukkit/event/player/PlayerInteractEvent.setCancelled:(Z)V
+     253: aload_0
+     254: aload_1
+     255: invokevirtual #387                // Method org/bukkit/event/player/PlayerInteractEvent.getPlayer:()Lorg/bukkit/entity/Player;
+     258: invokevirtual #276                // Method castFlare:(Lorg/bukkit/entity/Player;)V
+     261: goto          341
+     264: aload_3
+     265: invokevirtual #424                // Method org/bukkit/inventory/ItemStack.getType:()Lorg/bukkit/Material;
+     268: getstatic     #431                // Field org/bukkit/Material.STICK:Lorg/bukkit/Material;
+     271: if_acmpne     304
+     274: aload_0
+     275: aload_1
+     276: invokevirtual #387                // Method org/bukkit/event/player/PlayerInteractEvent.getPlayer:()Lorg/bukkit/entity/Player;
+     279: ldc           #54                 // String solar
+     281: invokevirtual #280                // Method tier:(Lorg/bukkit/entity/Player;Ljava/lang/String;)I
+     284: iconst_2
+     285: if_icmplt     304
+     288: aload_1
+     289: iconst_1
+     290: invokevirtual #383                // Method org/bukkit/event/player/PlayerInteractEvent.setCancelled:(Z)V
+     293: aload_0
+     294: aload_1
+     295: invokevirtual #387                // Method org/bukkit/event/player/PlayerInteractEvent.getPlayer:()Lorg/bukkit/entity/Player;
+     298: invokevirtual #288                // Method castJudgment:(Lorg/bukkit/entity/Player;)V
+     301: goto          341
+     304: aload_3
+     305: invokevirtual #424                // Method org/bukkit/inventory/ItemStack.getType:()Lorg/bukkit/Material;
+     308: getstatic     #146                // Field org/bukkit/Material.NETHER_STAR:Lorg/bukkit/Material;
+     311: if_acmpne     341
+     314: aload_0
+     315: aload_1
+     316: invokevirtual #387                // Method org/bukkit/event/player/PlayerInteractEvent.getPlayer:()Lorg/bukkit/entity/Player;
+     319: ldc           #54                 // String solar
+     321: invokevirtual #280                // Method tier:(Lorg/bukkit/entity/Player;Ljava/lang/String;)I
+     324: iconst_3
+     325: if_icmplt     341
+     328: aload_1
+     329: iconst_1
+     330: invokevirtual #383                // Method org/bukkit/event/player/PlayerInteractEvent.setCancelled:(Z)V
+     333: aload_0
+     334: aload_1
+     335: invokevirtual #387                // Method org/bukkit/event/player/PlayerInteractEvent.getPlayer:()Lorg/bukkit/entity/Player;
+     338: invokevirtual #292                // Method castEclipse:(Lorg/bukkit/entity/Player;)V
+     341: return
+
+  private void castFlare(org.bukkit.entity.Player);
+    descriptor: (Lorg/bukkit/entity/Player;)V
+    Code:
+       0: aload_0
+       1: aload_1
+       2: ldc_w         #264                // String flare
+       5: ldc2_w        #434                // long 6000l
+       8: invokevirtual #436                // Method ready:(Lorg/bukkit/entity/Player;Ljava/lang/String;J)Z
+      11: ifne          15
+      14: return
+      15: aload_1
+      16: invokeinterface #440,  1          // InterfaceMethod org/bukkit/entity/Player.getEyeLocation:()Lorg/bukkit/Location;
+      21: aload_1
+      22: invokeinterface #440,  1          // InterfaceMethod org/bukkit/entity/Player.getEyeLocation:()Lorg/bukkit/Location;
+      27: invokevirtual #443                // Method org/bukkit/Location.getDirection:()Lorg/bukkit/util/Vector;
+      30: ldc2_w        #449                // double 2.2d
+      33: invokevirtual #451                // Method org/bukkit/util/Vector.multiply:(D)Lorg/bukkit/util/Vector;
+      36: invokevirtual #457                // Method org/bukkit/Location.add:(Lorg/bukkit/util/Vector;)Lorg/bukkit/Location;
+      39: astore_2
+      40: aload_1
+      41: invokeinterface #461,  1          // InterfaceMethod org/bukkit/entity/Player.getWorld:()Lorg/bukkit/World;
+      46: getstatic     #465                // Field org/bukkit/Particle.FLAME:Lorg/bukkit/Particle;
+      49: aload_2
+      50: bipush        35
+      52: ldc2_w        #471                // double 0.6d
+      55: ldc2_w        #471                // double 0.6d
+      58: ldc2_w        #471                // double 0.6d
+      61: ldc2_w        #473                // double 0.03d
+      64: invokeinterface #475,  12         // InterfaceMethod org/bukkit/World.spawnParticle:(Lorg/bukkit/Particle;Lorg/bukkit/Location;IDDDD)V
+      69: aload_1
+      70: invokeinterface #461,  1          // InterfaceMethod org/bukkit/entity/Player.getWorld:()Lorg/bukkit/World;
+      75: getstatic     #481                // Field org/bukkit/Particle.EXPLOSION:Lorg/bukkit/Particle;
+      78: aload_2
+      79: iconst_1
+      80: invokeinterface #484,  4          // InterfaceMethod org/bukkit/World.spawnParticle:(Lorg/bukkit/Particle;Lorg/bukkit/Location;I)V
+      85: aload_1
+      86: invokeinterface #461,  1          // InterfaceMethod org/bukkit/entity/Player.getWorld:()Lorg/bukkit/World;
+      91: aload_2
+      92: getstatic     #487                // Field org/bukkit/Sound.ENTITY_BLAZE_SHOOT:Lorg/bukkit/Sound;
+      95: ldc_w         #418                // float 0.8f
+      98: ldc_w         #490                // float 1.3f
+     101: invokeinterface #491,  5          // InterfaceMethod org/bukkit/World.playSound:(Lorg/bukkit/Location;Lorg/bukkit/Sound;FF)V
+     106: aload_1
+     107: invokeinterface #461,  1          // InterfaceMethod org/bukkit/entity/Player.getWorld:()Lorg/bukkit/World;
+     112: aload_2
+     113: ldc2_w        #449                // double 2.2d
+     116: ldc2_w        #449                // double 2.2d
+     119: ldc2_w        #449                // double 2.2d
+     122: invokeinterface #492,  8          // InterfaceMethod org/bukkit/World.getNearbyEntities:(Lorg/bukkit/Location;DDD)Ljava/util/Collection;
+     127: invokeinterface #496,  1          // InterfaceMethod java/util/Collection.iterator:()Ljava/util/Iterator;
+     132: astore_3
+     133: aload_3
+     134: invokeinterface #502,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+     139: ifeq          246
+     142: aload_3
+     143: invokeinterface #507,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+     148: checkcast     #511                // class org/bukkit/entity/Entity
+     151: astore        4
+     153: aload         4
+     155: instanceof    #513                // class org/bukkit/entity/LivingEntity
+     158: ifeq          243
+     161: aload         4
+     163: checkcast     #513                // class org/bukkit/entity/LivingEntity
+     166: astore        5
+     168: aload         5
+     170: aload_1
+     171: if_acmpeq     243
+     174: aload_0
+     175: aload_1
+     176: aload         5
+     178: invokevirtual #515                // Method isFriendly:(Lorg/bukkit/entity/Player;Lorg/bukkit/entity/LivingEntity;)Z
+     181: ifne          243
+     184: aload         5
+     186: ldc2_w        #519                // double 5.0d
+     189: aload_1
+     190: invokeinterface #521,  4          // InterfaceMethod org/bukkit/entity/LivingEntity.damage:(DLorg/bukkit/entity/Entity;)V
+     195: aload         5
+     197: invokeinterface #525,  1          // InterfaceMethod org/bukkit/entity/LivingEntity.getLocation:()Lorg/bukkit/Location;
+     202: invokevirtual #526                // Method org/bukkit/Location.toVector:()Lorg/bukkit/util/Vector;
+     205: aload_1
+     206: invokeinterface #408,  1          // InterfaceMethod org/bukkit/entity/Player.getLocation:()Lorg/bukkit/Location;
+     211: invokevirtual #526                // Method org/bukkit/Location.toVector:()Lorg/bukkit/util/Vector;
+     214: invokevirtual #529                // Method org/bukkit/util/Vector.subtract:(Lorg/bukkit/util/Vector;)Lorg/bukkit/util/Vector;
+     217: invokevirtual #533                // Method org/bukkit/util/Vector.normalize:()Lorg/bukkit/util/Vector;
+     220: ldc2_w        #536                // double 0.55d
+     223: invokevirtual #451                // Method org/bukkit/util/Vector.multiply:(D)Lorg/bukkit/util/Vector;
+     226: ldc2_w        #538                // double 0.25d
+     229: invokevirtual #540                // Method org/bukkit/util/Vector.setY:(D)Lorg/bukkit/util/Vector;
+     232: astore        6
+     234: aload         5
+     236: aload         6
+     238: invokeinterface #543,  2          // InterfaceMethod org/bukkit/entity/LivingEntity.setVelocity:(Lorg/bukkit/util/Vector;)V
+     243: goto          133
+     246: return
+
+  private void castJudgment(org.bukkit.entity.Player);
+    descriptor: (Lorg/bukkit/entity/Player;)V
+    Code:
+       0: aload_0
+       1: aload_1
+       2: ldc_w         #270                // String judgment
+       5: ldc2_w        #547                // long 14000l
+       8: invokevirtual #436                // Method ready:(Lorg/bukkit/entity/Player;Ljava/lang/String;J)Z
+      11: ifne          15
+      14: return
+      15: aload_1
+      16: invokeinterface #440,  1          // InterfaceMethod org/bukkit/entity/Player.getEyeLocation:()Lorg/bukkit/Location;
+      21: invokevirtual #549                // Method org/bukkit/Location.clone:()Lorg/bukkit/Location;
+      24: astore_2
+      25: aload_2
+      26: invokevirtual #443                // Method org/bukkit/Location.getDirection:()Lorg/bukkit/util/Vector;
+      29: invokevirtual #533                // Method org/bukkit/util/Vector.normalize:()Lorg/bukkit/util/Vector;
+      32: astore_3
+      33: new           #552                // class java/util/HashSet
+      36: dup
+      37: invokespecial #554                // Method java/util/HashSet."<init>":()V
+      40: astore        4
+      42: iconst_0
+      43: istore        5
+      45: iload         5
+      47: bipush        22
+      49: if_icmpge     265
+      52: aload_2
+      53: aload_3
+      54: invokevirtual #555                // Method org/bukkit/util/Vector.clone:()Lorg/bukkit/util/Vector;
+      57: ldc2_w        #557                // double 0.7d
+      60: invokevirtual #451                // Method org/bukkit/util/Vector.multiply:(D)Lorg/bukkit/util/Vector;
+      63: invokevirtual #457                // Method org/bukkit/Location.add:(Lorg/bukkit/util/Vector;)Lorg/bukkit/Location;
+      66: pop
+      67: aload_1
+      68: invokeinterface #461,  1          // InterfaceMethod org/bukkit/entity/Player.getWorld:()Lorg/bukkit/World;
+      73: getstatic     #559                // Field org/bukkit/Particle.END_ROD:Lorg/bukkit/Particle;
+      76: aload_2
+      77: iconst_4
+      78: ldc2_w        #562                // double 0.12d
+      81: ldc2_w        #562                // double 0.12d
+      84: ldc2_w        #562                // double 0.12d
+      87: ldc2_w        #564                // double 0.01d
+      90: invokeinterface #475,  12         // InterfaceMethod org/bukkit/World.spawnParticle:(Lorg/bukkit/Particle;Lorg/bukkit/Location;IDDDD)V
+      95: aload_1
+      96: invokeinterface #461,  1          // InterfaceMethod org/bukkit/entity/Player.getWorld:()Lorg/bukkit/World;
+     101: getstatic     #465                // Field org/bukkit/Particle.FLAME:Lorg/bukkit/Particle;
+     104: aload_2
+     105: iconst_2
+     106: ldc2_w        #566                // double 0.1d
+     109: ldc2_w        #566                // double 0.1d
+     112: ldc2_w        #566                // double 0.1d
+     115: ldc2_w        #564                // double 0.01d
+     118: invokeinterface #475,  12         // InterfaceMethod org/bukkit/World.spawnParticle:(Lorg/bukkit/Particle;Lorg/bukkit/Location;IDDDD)V
+     123: aload_1
+     124: invokeinterface #461,  1          // InterfaceMethod org/bukkit/entity/Player.getWorld:()Lorg/bukkit/World;
+     129: aload_2
+     130: ldc2_w        #568                // double 0.75d
+     133: ldc2_w        #568                // double 0.75d
+     136: ldc2_w        #568                // double 0.75d
+     139: invokeinterface #492,  8          // InterfaceMethod org/bukkit/World.getNearbyEntities:(Lorg/bukkit/Location;DDD)Ljava/util/Collection;
+     144: invokeinterface #496,  1          // InterfaceMethod java/util/Collection.iterator:()Ljava/util/Iterator;
+     149: astore        6
+     151: aload         6
+     153: invokeinterface #502,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+     158: ifeq          259
+     161: aload         6
+     163: invokeinterface #507,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+     168: checkcast     #511                // class org/bukkit/entity/Entity
+     171: astore        7
+     173: aload         7
+     175: instanceof    #513                // class org/bukkit/entity/LivingEntity
+     178: ifeq          256
+     181: aload         7
+     183: checkcast     #513                // class org/bukkit/entity/LivingEntity
+     186: astore        8
+     188: aload         8
+     190: aload_1
+     191: if_acmpeq     256
+     194: aload         4
+     196: aload         8
+     198: invokeinterface #570,  1          // InterfaceMethod org/bukkit/entity/LivingEntity.getUniqueId:()Ljava/util/UUID;
+     203: invokeinterface #574,  2          // InterfaceMethod java/util/Set.contains:(Ljava/lang/Object;)Z
+     208: ifne          256
+     211: aload_0
+     212: aload_1
+     213: aload         8
+     215: invokevirtual #515                // Method isFriendly:(Lorg/bukkit/entity/Player;Lorg/bukkit/entity/LivingEntity;)Z
+     218: ifne          256
+     221: aload         4
+     223: aload         8
+     225: invokeinterface #570,  1          // InterfaceMethod org/bukkit/entity/LivingEntity.getUniqueId:()Ljava/util/UUID;
+     230: invokeinterface #579,  2          // InterfaceMethod java/util/Set.add:(Ljava/lang/Object;)Z
+     235: pop
+     236: aload         8
+     238: ldc2_w        #581                // double 7.0d
+     241: aload_1
+     242: invokeinterface #521,  4          // InterfaceMethod org/bukkit/entity/LivingEntity.damage:(DLorg/bukkit/entity/Entity;)V
+     247: aload         8
+     249: bipush        30
+     251: invokeinterface #583,  2          // InterfaceMethod org/bukkit/entity/LivingEntity.setFireTicks:(I)V
+     256: goto          151
+     259: iinc          5, 1
+     262: goto          45
+     265: aload_1
+     266: invokeinterface #461,  1          // InterfaceMethod org/bukkit/entity/Player.getWorld:()Lorg/bukkit/World;
+     271: aload_1
+     272: invokeinterface #408,  1          // InterfaceMethod org/bukkit/entity/Player.getLocation:()Lorg/bukkit/Location;
+     277: getstatic     #587                // Field org/bukkit/Sound.ITEM_TRIDENT_THUNDER:Lorg/bukkit/Sound;
+     280: ldc_w         #590                // float 0.6f
+     283: ldc_w         #591                // float 1.6f
+     286: invokeinterface #491,  5          // InterfaceMethod org/bukkit/World.playSound:(Lorg/bukkit/Location;Lorg/bukkit/Sound;FF)V
+     291: return
+
+  private void castEclipse(org.bukkit.entity.Player);
+    descriptor: (Lorg/bukkit/entity/Player;)V
+    Code:
+       0: aload_0
+       1: aload_1
+       2: ldc_w         #274                // String eclipse
+       5: ldc2_w        #592                // long 60000l
+       8: invokevirtual #436                // Method ready:(Lorg/bukkit/entity/Player;Ljava/lang/String;J)Z
+      11: ifne          15
+      14: return
+      15: aload_1
+      16: invokeinterface #408,  1          // InterfaceMethod org/bukkit/entity/Player.getLocation:()Lorg/bukkit/Location;
+      21: invokevirtual #549                // Method org/bukkit/Location.clone:()Lorg/bukkit/Location;
+      24: dconst_0
+      25: ldc2_w        #594                // double 10.0d
+      28: dconst_0
+      29: invokevirtual #596                // Method org/bukkit/Location.add:(DDD)Lorg/bukkit/Location;
+      32: astore_2
+      33: aload_1
+      34: invokeinterface #461,  1          // InterfaceMethod org/bukkit/entity/Player.getWorld:()Lorg/bukkit/World;
+      39: getstatic     #465                // Field org/bukkit/Particle.FLAME:Lorg/bukkit/Particle;
+      42: aload_2
+      43: bipush        120
+      45: ldc2_w        #599                // double 2.5d
+      48: ldc2_w        #601                // double 0.8d
+      51: ldc2_w        #599                // double 2.5d
+      54: ldc2_w        #603                // double 0.02d
+      57: invokeinterface #475,  12         // InterfaceMethod org/bukkit/World.spawnParticle:(Lorg/bukkit/Particle;Lorg/bukkit/Location;IDDDD)V
+      62: aload_1
+      63: invokeinterface #461,  1          // InterfaceMethod org/bukkit/entity/Player.getWorld:()Lorg/bukkit/World;
+      68: getstatic     #605                // Field org/bukkit/Particle.LAVA:Lorg/bukkit/Particle;
+      71: aload_2
+      72: bipush        60
+      74: ldc2_w        #608                // double 2.0d
+      77: ldc2_w        #610                // double 0.5d
+      80: ldc2_w        #608                // double 2.0d
+      83: ldc2_w        #603                // double 0.02d
+      86: invokeinterface #475,  12         // InterfaceMethod org/bukkit/World.spawnParticle:(Lorg/bukkit/Particle;Lorg/bukkit/Location;IDDDD)V
+      91: aload_1
+      92: invokeinterface #461,  1          // InterfaceMethod org/bukkit/entity/Player.getWorld:()Lorg/bukkit/World;
+      97: aload_1
+      98: invokeinterface #408,  1          // InterfaceMethod org/bukkit/entity/Player.getLocation:()Lorg/bukkit/Location;
+     103: getstatic     #612                // Field org/bukkit/Sound.ENTITY_WITHER_SPAWN:Lorg/bukkit/Sound;
+     106: ldc_w         #590                // float 0.6f
+     109: ldc_w         #615                // float 1.5f
+     112: invokeinterface #491,  5          // InterfaceMethod org/bukkit/World.playSound:(Lorg/bukkit/Location;Lorg/bukkit/Sound;FF)V
+     117: iconst_0
+     118: istore_3
+     119: iload_3
+     120: bipush        6
+     122: if_icmpge     154
+     125: invokestatic  #616                // Method org/bukkit/Bukkit.getScheduler:()Lorg/bukkit/scheduler/BukkitScheduler;
+     128: aload_0
+     129: aload_0
+     130: aload_1
+     131: invokedynamic #620,  0            // InvokeDynamic #19:run:(Lcom/essencesmp/solar/SolarPlugin;Lorg/bukkit/entity/Player;)Ljava/lang/Runnable;
+     136: iload_3
+     137: i2l
+     138: ldc2_w        #624                // long 10l
+     141: lmul
+     142: invokeinterface #626,  5          // InterfaceMethod org/bukkit/scheduler/BukkitScheduler.runTaskLater:(Lorg/bukkit/plugin/Plugin;Ljava/lang/Runnable;J)Lorg/bukkit/scheduler/BukkitTask;
+     147: pop
+     148: iinc          3, 1
+     151: goto          119
+     154: return
+
+  private boolean ready(org.bukkit.entity.Player, java.lang.String, long);
+    descriptor: (Lorg/bukkit/entity/Player;Ljava/lang/String;J)Z
+    Code:
+       0: invokestatic  #632                // Method java/lang/System.currentTimeMillis:()J
+       3: lstore        5
+       5: aload_0
+       6: getfield      #16                 // Field cooldowns:Ljava/util/Map;
+       9: aload_1
+      10: invokeinterface #638,  1          // InterfaceMethod org/bukkit/entity/Player.getUniqueId:()Ljava/util/UUID;
+      15: invokedynamic #639,  0            // InvokeDynamic #20:apply:()Ljava/util/function/Function;
+      20: invokeinterface #643,  3          // InterfaceMethod java/util/Map.computeIfAbsent:(Ljava/lang/Object;Ljava/util/function/Function;)Ljava/lang/Object;
+      25: checkcast     #644                // class java/util/Map
+      28: aload_2
+      29: lconst_0
+      30: invokestatic  #649                // Method java/lang/Long.valueOf:(J)Ljava/lang/Long;
+      33: invokeinterface #654,  3          // InterfaceMethod java/util/Map.getOrDefault:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      38: checkcast     #650                // class java/lang/Long
+      41: invokevirtual #658                // Method java/lang/Long.longValue:()J
+      44: lstore        7
+      46: lload         5
+      48: lload         7
+      50: lcmp
+      51: ifge          91
+      54: aload_1
+      55: getstatic     #284                // Field org/bukkit/ChatColor.RED:Lorg/bukkit/ChatColor;
+      58: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+      61: aload_2
+      62: lconst_1
+      63: lload         7
+      65: lload         5
+      67: lsub
+      68: ldc2_w        #661                // long 999l
+      71: ladd
+      72: ldc2_w        #663                // long 1000l
+      75: ldiv
+      76: invokestatic  #665                // Method java/lang/Math.max:(JJ)J
+      79: invokedynamic #671,  0            // InvokeDynamic #21:makeConcatWithConstants:(Ljava/lang/String;Ljava/lang/String;J)Ljava/lang/String;
+      84: invokeinterface #249,  2          // InterfaceMethod org/bukkit/entity/Player.sendMessage:(Ljava/lang/String;)V
+      89: iconst_0
+      90: ireturn
+      91: aload_0
+      92: getfield      #16                 // Field cooldowns:Ljava/util/Map;
+      95: aload_1
+      96: invokeinterface #638,  1          // InterfaceMethod org/bukkit/entity/Player.getUniqueId:()Ljava/util/UUID;
+     101: invokeinterface #674,  2          // InterfaceMethod java/util/Map.get:(Ljava/lang/Object;)Ljava/lang/Object;
+     106: checkcast     #644                // class java/util/Map
+     109: aload_2
+     110: lload         5
+     112: lload_3
+     113: ladd
+     114: invokestatic  #649                // Method java/lang/Long.valueOf:(J)Ljava/lang/Long;
+     117: invokeinterface #676,  3          // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+     122: pop
+     123: iconst_1
+     124: ireturn
+
+  private boolean isFriendly(org.bukkit.entity.Player, org.bukkit.entity.LivingEntity);
+    descriptor: (Lorg/bukkit/entity/Player;Lorg/bukkit/entity/LivingEntity;)Z
+    Code:
+       0: aload_2
+       1: instanceof    #239                // class org/bukkit/entity/Player
+       4: ifeq          40
+       7: aload_2
+       8: checkcast     #239                // class org/bukkit/entity/Player
+      11: astore_3
+      12: aload_1
+      13: aload_3
+      14: invokeinterface #679,  2          // InterfaceMethod org/bukkit/entity/Player.equals:(Ljava/lang/Object;)Z
+      19: ifeq          24
+      22: iconst_1
+      23: ireturn
+      24: aload_1
+      25: invokeinterface #461,  1          // InterfaceMethod org/bukkit/entity/Player.getWorld:()Lorg/bukkit/World;
+      30: invokeinterface #680,  1          // InterfaceMethod org/bukkit/World.getPVP:()Z
+      35: ifne          40
+      38: iconst_1
+      39: ireturn
+      40: iconst_0
+      41: ireturn
+
+  private int tier(org.bukkit.entity.Player, java.lang.String);
+    descriptor: (Lorg/bukkit/entity/Player;Ljava/lang/String;)I
+    Code:
+       0: aload_0
+       1: getfield      #10                 // Field tiers:Ljava/util/Map;
+       4: aload_1
+       5: invokeinterface #638,  1          // InterfaceMethod org/bukkit/entity/Player.getUniqueId:()Ljava/util/UUID;
+      10: invokestatic  #683                // Method java/util/Collections.emptyMap:()Ljava/util/Map;
+      13: invokeinterface #654,  3          // InterfaceMethod java/util/Map.getOrDefault:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      18: checkcast     #644                // class java/util/Map
+      21: aload_2
+      22: getstatic     #250                // Field java/util/Locale.ROOT:Ljava/util/Locale;
+      25: invokevirtual #256                // Method java/lang/String.toLowerCase:(Ljava/util/Locale;)Ljava/lang/String;
+      28: iconst_1
+      29: invokestatic  #230                // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+      32: invokeinterface #654,  3          // InterfaceMethod java/util/Map.getOrDefault:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      37: checkcast     #231                // class java/lang/Integer
+      40: invokevirtual #391                // Method java/lang/Integer.intValue:()I
+      43: ireturn
+
+  private void setTier(org.bukkit.entity.Player, java.lang.String, int);
+    descriptor: (Lorg/bukkit/entity/Player;Ljava/lang/String;I)V
+    Code:
+       0: aload_0
+       1: getfield      #10                 // Field tiers:Ljava/util/Map;
+       4: aload_1
+       5: invokeinterface #638,  1          // InterfaceMethod org/bukkit/entity/Player.getUniqueId:()Ljava/util/UUID;
+      10: invokedynamic #689,  0            // InvokeDynamic #22:apply:()Ljava/util/function/Function;
+      15: invokeinterface #643,  3          // InterfaceMethod java/util/Map.computeIfAbsent:(Ljava/lang/Object;Ljava/util/function/Function;)Ljava/lang/Object;
+      20: checkcast     #644                // class java/util/Map
+      23: aload_2
+      24: getstatic     #250                // Field java/util/Locale.ROOT:Ljava/util/Locale;
+      27: invokevirtual #256                // Method java/lang/String.toLowerCase:(Ljava/util/Locale;)Ljava/lang/String;
+      30: iload_3
+      31: invokestatic  #230                // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+      34: invokeinterface #676,  3          // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      39: pop
+      40: aload_0
+      41: invokevirtual #101                // Method saveTiers:()V
+      44: return
+
+  private void consumeOne(org.bukkit.entity.Player, org.bukkit.inventory.ItemStack);
+    descriptor: (Lorg/bukkit/entity/Player;Lorg/bukkit/inventory/ItemStack;)V
+    Code:
+       0: aload_2
+       1: invokevirtual #690                // Method org/bukkit/inventory/ItemStack.getAmount:()I
+       4: iconst_1
+       5: if_icmpgt     23
+       8: aload_1
+       9: invokeinterface #325,  1          // InterfaceMethod org/bukkit/entity/Player.getInventory:()Lorg/bukkit/inventory/PlayerInventory;
+      14: aconst_null
+      15: invokeinterface #693,  2          // InterfaceMethod org/bukkit/inventory/PlayerInventory.setItemInMainHand:(Lorg/bukkit/inventory/ItemStack;)V
+      20: goto          33
+      23: aload_2
+      24: aload_2
+      25: invokevirtual #690                // Method org/bukkit/inventory/ItemStack.getAmount:()I
+      28: iconst_1
+      29: isub
+      30: invokevirtual #697                // Method org/bukkit/inventory/ItemStack.setAmount:(I)V
+      33: return
+
+  private void loadTiers();
+    descriptor: ()V
+    Code:
+       0: aload_0
+       1: invokevirtual #700                // Method getDataFolder:()Ljava/io/File;
+       4: invokevirtual #704                // Method java/io/File.exists:()Z
+       7: ifne          18
+      10: aload_0
+      11: invokevirtual #700                // Method getDataFolder:()Ljava/io/File;
+      14: invokevirtual #709                // Method java/io/File.mkdirs:()Z
+      17: pop
+      18: aload_0
+      19: invokevirtual #712                // Method getConfig:()Lorg/bukkit/configuration/file/FileConfiguration;
+      22: astore_1
+      23: aload_1
+      24: ldc_w         #716                // String tiers
+      27: invokevirtual #717                // Method org/bukkit/configuration/file/FileConfiguration.isConfigurationSection:(Ljava/lang/String;)Z
+      30: ifne          34
+      33: return
+      34: aload_1
+      35: ldc_w         #716                // String tiers
+      38: invokevirtual #722                // Method org/bukkit/configuration/file/FileConfiguration.getConfigurationSection:(Ljava/lang/String;)Lorg/bukkit/configuration/ConfigurationSection;
+      41: invokestatic  #60                 // Method java/util/Objects.requireNonNull:(Ljava/lang/Object;)Ljava/lang/Object;
+      44: checkcast     #726                // class org/bukkit/configuration/ConfigurationSection
+      47: iconst_0
+      48: invokeinterface #728,  2          // InterfaceMethod org/bukkit/configuration/ConfigurationSection.getKeys:(Z)Ljava/util/Set;
+      53: invokeinterface #732,  1          // InterfaceMethod java/util/Set.iterator:()Ljava/util/Iterator;
+      58: astore_2
+      59: aload_2
+      60: invokeinterface #502,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+      65: ifeq          198
+      68: aload_2
+      69: invokeinterface #507,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+      74: checkcast     #117                // class java/lang/String
+      77: astore_3
+      78: aload_3
+      79: invokestatic  #733                // Method java/util/UUID.fromString:(Ljava/lang/String;)Ljava/util/UUID;
+      82: astore        4
+      84: aload_1
+      85: aload_3
+      86: invokedynamic #739,  0            // InvokeDynamic #23:makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;
+      91: invokevirtual #722                // Method org/bukkit/configuration/file/FileConfiguration.getConfigurationSection:(Ljava/lang/String;)Lorg/bukkit/configuration/ConfigurationSection;
+      94: astore        5
+      96: aload         5
+      98: ifnonnull     104
+     101: goto          59
+     104: new           #7                  // class java/util/HashMap
+     107: dup
+     108: invokespecial #9                  // Method java/util/HashMap."<init>":()V
+     111: astore        6
+     113: aload         5
+     115: iconst_0
+     116: invokeinterface #728,  2          // InterfaceMethod org/bukkit/configuration/ConfigurationSection.getKeys:(Z)Ljava/util/Set;
+     121: invokeinterface #732,  1          // InterfaceMethod java/util/Set.iterator:()Ljava/util/Iterator;
+     126: astore        7
+     128: aload         7
+     130: invokeinterface #502,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+     135: ifeq          176
+     138: aload         7
+     140: invokeinterface #507,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+     145: checkcast     #117                // class java/lang/String
+     148: astore        8
+     150: aload         6
+     152: aload         8
+     154: aload         5
+     156: aload         8
+     158: iconst_1
+     159: invokeinterface #740,  3          // InterfaceMethod org/bukkit/configuration/ConfigurationSection.getInt:(Ljava/lang/String;I)I
+     164: invokestatic  #230                // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+     167: invokeinterface #676,  3          // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+     172: pop
+     173: goto          128
+     176: aload_0
+     177: getfield      #10                 // Field tiers:Ljava/util/Map;
+     180: aload         4
+     182: aload         6
+     184: invokeinterface #676,  3          // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+     189: pop
+     190: goto          195
+     193: astore        4
+     195: goto          59
+     198: return
+    Exception table:
+       from    to  target type
+          78   101   193   Class java/lang/IllegalArgumentException
+         104   190   193   Class java/lang/IllegalArgumentException
+
+  private void saveTiers();
+    descriptor: ()V
+    Code:
+       0: aload_0
+       1: invokevirtual #712                // Method getConfig:()Lorg/bukkit/configuration/file/FileConfiguration;
+       4: astore_1
+       5: aload_1
+       6: ldc_w         #716                // String tiers
+       9: aconst_null
+      10: invokevirtual #746                // Method org/bukkit/configuration/file/FileConfiguration.set:(Ljava/lang/String;Ljava/lang/Object;)V
+      13: aload_0
+      14: getfield      #10                 // Field tiers:Ljava/util/Map;
+      17: invokeinterface #749,  1          // InterfaceMethod java/util/Map.entrySet:()Ljava/util/Set;
+      22: invokeinterface #732,  1          // InterfaceMethod java/util/Set.iterator:()Ljava/util/Iterator;
+      27: astore_2
+      28: aload_2
+      29: invokeinterface #502,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+      34: ifeq          131
+      37: aload_2
+      38: invokeinterface #507,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+      43: checkcast     #753                // class java/util/Map$Entry
+      46: astore_3
+      47: aload_3
+      48: invokeinterface #755,  1          // InterfaceMethod java/util/Map$Entry.getValue:()Ljava/lang/Object;
+      53: checkcast     #644                // class java/util/Map
+      56: invokeinterface #749,  1          // InterfaceMethod java/util/Map.entrySet:()Ljava/util/Set;
+      61: invokeinterface #732,  1          // InterfaceMethod java/util/Set.iterator:()Ljava/util/Iterator;
+      66: astore        4
+      68: aload         4
+      70: invokeinterface #502,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+      75: ifeq          128
+      78: aload         4
+      80: invokeinterface #507,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+      85: checkcast     #753                // class java/util/Map$Entry
+      88: astore        5
+      90: aload_1
+      91: aload_3
+      92: invokeinterface #758,  1          // InterfaceMethod java/util/Map$Entry.getKey:()Ljava/lang/Object;
+      97: invokestatic  #164                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+     100: aload         5
+     102: invokeinterface #758,  1          // InterfaceMethod java/util/Map$Entry.getKey:()Ljava/lang/Object;
+     107: checkcast     #117                // class java/lang/String
+     110: invokedynamic #761,  0            // InvokeDynamic #24:makeConcatWithConstants:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+     115: aload         5
+     117: invokeinterface #755,  1          // InterfaceMethod java/util/Map$Entry.getValue:()Ljava/lang/Object;
+     122: invokevirtual #746                // Method org/bukkit/configuration/file/FileConfiguration.set:(Ljava/lang/String;Ljava/lang/Object;)V
+     125: goto          68
+     128: goto          28
+     131: aload_0
+     132: invokevirtual #764                // Method saveConfig:()V
+     135: return
+
+  private static java.util.Map lambda$setTier$4(java.util.UUID);
+    descriptor: (Ljava/util/UUID;)Ljava/util/Map;
+    Code:
+       0: new           #7                  // class java/util/HashMap
+       3: dup
+       4: invokespecial #9                  // Method java/util/HashMap."<init>":()V
+       7: areturn
+
+  private static java.util.Map lambda$ready$3(java.util.UUID);
+    descriptor: (Ljava/util/UUID;)Ljava/util/Map;
+    Code:
+       0: new           #7                  // class java/util/HashMap
+       3: dup
+       4: invokespecial #9                  // Method java/util/HashMap."<init>":()V
+       7: areturn
+
+  private void lambda$castEclipse$2(org.bukkit.entity.Player);
+    descriptor: (Lorg/bukkit/entity/Player;)V
+    Code:
+       0: aload_1
+       1: invokeinterface #767,  1          // InterfaceMethod org/bukkit/entity/Player.isOnline:()Z
+       6: ifeq          18
+       9: aload_1
+      10: invokeinterface #770,  1          // InterfaceMethod org/bukkit/entity/Player.isValid:()Z
+      15: ifne          19
+      18: return
+      19: aload_1
+      20: invokeinterface #408,  1          // InterfaceMethod org/bukkit/entity/Player.getLocation:()Lorg/bukkit/Location;
+      25: invokevirtual #549                // Method org/bukkit/Location.clone:()Lorg/bukkit/Location;
+      28: astore_2
+      29: aload_2
+      30: invokevirtual #773                // Method org/bukkit/Location.getWorld:()Lorg/bukkit/World;
+      33: getstatic     #465                // Field org/bukkit/Particle.FLAME:Lorg/bukkit/Particle;
+      36: aload_2
+      37: bipush        55
+      39: ldc2_w        #774                // double 4.0d
+      42: ldc2_w        #776                // double 1.5d
+      45: ldc2_w        #774                // double 4.0d
+      48: ldc2_w        #778                // double 0.04d
+      51: invokeinterface #475,  12         // InterfaceMethod org/bukkit/World.spawnParticle:(Lorg/bukkit/Particle;Lorg/bukkit/Location;IDDDD)V
+      56: aload_2
+      57: invokevirtual #773                // Method org/bukkit/Location.getWorld:()Lorg/bukkit/World;
+      60: aload_2
+      61: ldc2_w        #774                // double 4.0d
+      64: ldc2_w        #780                // double 3.0d
+      67: ldc2_w        #774                // double 4.0d
+      70: invokeinterface #492,  8          // InterfaceMethod org/bukkit/World.getNearbyEntities:(Lorg/bukkit/Location;DDD)Ljava/util/Collection;
+      75: invokeinterface #496,  1          // InterfaceMethod java/util/Collection.iterator:()Ljava/util/Iterator;
+      80: astore_3
+      81: aload_3
+      82: invokeinterface #502,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+      87: ifeq          146
+      90: aload_3
+      91: invokeinterface #507,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+      96: checkcast     #511                // class org/bukkit/entity/Entity
+      99: astore        4
+     101: aload         4
+     103: instanceof    #513                // class org/bukkit/entity/LivingEntity
+     106: ifeq          143
+     109: aload         4
+     111: checkcast     #513                // class org/bukkit/entity/LivingEntity
+     114: astore        5
+     116: aload         5
+     118: aload_1
+     119: if_acmpeq     143
+     122: aload_0
+     123: aload_1
+     124: aload         5
+     126: invokevirtual #515                // Method isFriendly:(Lorg/bukkit/entity/Player;Lorg/bukkit/entity/LivingEntity;)Z
+     129: ifne          143
+     132: aload         5
+     134: ldc2_w        #608                // double 2.0d
+     137: aload_1
+     138: invokeinterface #521,  4          // InterfaceMethod org/bukkit/entity/LivingEntity.damage:(DLorg/bukkit/entity/Entity;)V
+     143: goto          81
+     146: return
+
+  private boolean lambda$onEnable$1(org.bukkit.command.CommandSender, org.bukkit.command.Command, java.lang.String, java.lang.String[]);
+    descriptor: (Lorg/bukkit/command/CommandSender;Lorg/bukkit/command/Command;Ljava/lang/String;[Ljava/lang/String;)Z
+    Code:
+       0: aload_0
+       1: aload_1
+       2: aload_3
+       3: aload         4
+       5: invokevirtual #782                // Method essenceCommand:(Lorg/bukkit/command/CommandSender;Ljava/lang/String;[Ljava/lang/String;)Z
+       8: ireturn
+
+  private boolean lambda$onEnable$0(org.bukkit.command.CommandSender, org.bukkit.command.Command, java.lang.String, java.lang.String[]);
+    descriptor: (Lorg/bukkit/command/CommandSender;Lorg/bukkit/command/Command;Ljava/lang/String;[Ljava/lang/String;)Z
+    Code:
+       0: aload_0
+       1: aload_1
+       2: aload_3
+       3: aload         4
+       5: invokevirtual #786                // Method solarCommand:(Lorg/bukkit/command/CommandSender;Ljava/lang/String;[Ljava/lang/String;)Z
+       8: ireturn
+}
